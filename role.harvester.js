@@ -21,7 +21,7 @@ module.exports = {
             if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(structure);
             }
-            else if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_FULL) {
+            else if (structure == undefined) {
                 roleBuilder.run(creep);
             }
         }
