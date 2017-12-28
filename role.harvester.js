@@ -1,3 +1,5 @@
+var roleBuilder = require('role.builder');
+
 module.exports = {
     run: function(creep) {
 
@@ -18,6 +20,9 @@ module.exports = {
 
             if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(structure);
+            }
+            else if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_FULL) {
+                roleBuilder.run(creep);
             }
         }
         else {
