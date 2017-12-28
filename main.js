@@ -33,24 +33,25 @@ module.exports.loop = function () {
 
     var minimumNumberOfHarvesters = 4;
     var minimumNumberOfUpgraders = 1;
-    var minimumNumberOfBuilders = 1;
+    var minimumNumberOfBuilders = 4;
     var minimumNumberOfRepairers = 2;
     var name = undefined;
 
-    var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
-    //console.log('Harvesters: ' + numberOfHarvesters);
 
-    var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
-    //console.log('Upgraders: ' + numberOfUpgraders);
-
-    var numberOfBuilders = _.sum(Game.creeps, (c) => c.memory.role == 'builder');
-    //console.log('Builders: ' + numberOfBuilders);
-
-    var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
-    //console.log('Repairers: ' + numberOfRepairers);
 
     if (Game.spawns.Spawn1.room.energyAvailable == Game.spawns.Spawn1.room.energyCapacityAvailable) {
 
+        var numberOfHarvesters = _.sum(Game.creeps, (c) => c.memory.role == 'harvester');
+        //console.log('Harvesters: ' + numberOfHarvesters);
+
+        var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
+        //console.log('Upgraders: ' + numberOfUpgraders);
+
+        var numberOfBuilders = _.sum(Game.creeps, (c) => c.memory.role == 'builder');
+        //console.log('Builders: ' + numberOfBuilders);
+
+        var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
+        //console.log('Repairers: ' + numberOfRepairers);
         var energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
 
         if (numberOfHarvesters < minimumNumberOfHarvesters) {
@@ -72,7 +73,7 @@ module.exports.loop = function () {
                 console.log("Spawned new repairer: " + name);
             }
         }
-        else {
+        else if (numberOfBuilders < minimumNumberOfBuilders) {
             name = Game.spawns.Spawn1.createCustomCreep(energy, 'builder');
             if (!(name < 0)) {
                 console.log("Spawned new builder: " + name);
