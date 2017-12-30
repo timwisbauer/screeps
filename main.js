@@ -37,7 +37,11 @@ module.exports.loop = function () {
     var minimumNumberOfRepairers = 2;
     var name = undefined;
 
+    var hostiles = Game.spawns.Spawn1.room.find(FIND_HOSTILE_CREEPS);
 
+    if (hostiles.length > 0) {
+        Game.spawns.Spawn1.room.controller.activateSafeMode();
+    }
 
     if (Game.spawns.Spawn1.room.energyAvailable == Game.spawns.Spawn1.room.energyCapacityAvailable) {
 
