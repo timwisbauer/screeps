@@ -1,6 +1,6 @@
-var roleUpgrader = require('./upgrader');
+var roleBuilder = require('./builder');
 
-var roleBuilder = {
+var roleRepairer = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -12,14 +12,16 @@ var roleBuilder = {
             creep.memory.working = true;
         }
         if (creep.memory.working == true) {
-            var constructionSite = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
-            if (constructionSite != undefined) {
-                if (creep.build(constructionSite) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(constructionSite);
+            var structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.hits <= (s.hitsMax * .9) && s.structureType != STRUCTURE_WALL
+            });
+            if (structure != undefined) {
+                if (creep.repair(structure) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(structure);
                 }
             }
             else {
-                roleUpgrader.run(creep)
+                roleBuilder.run(creep)
             }
         }
         else {
@@ -28,21 +30,21 @@ var roleBuilder = {
     },
     // checks if the room needs to spawn a creep
     spawn: function(room) {
-        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder' && creep.room.name == room.name);
+        var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer' && creep.room.name == room.name);
         // console.log('Upgraders: ' + upgraders.length, room.name);
 
-        if (builders.length < 0) {
+        if (repairers.length < 0) {
             return true;
         }
     },
     // returns an object with the data to spawn a new creep
     spawnData: function(room) {
-            let name = 'Builder' + Game.time;
+            let name = 'repairer' + Game.time;
             let body = [WORK, CARRY, MOVE];
-            let memory = {role: 'builder'};
+            let memory = {role: 'repairer'};
         
             return {name, body, memory};
     }
 };
 
-module.exports = roleBuilder;
+module.exports = roleRepairer;
