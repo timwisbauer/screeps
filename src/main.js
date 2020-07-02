@@ -8,7 +8,13 @@ module.exports.loop = function () {
     Game.myRooms = _.filter(Game.rooms, r => r.controller && r.controller.level > 0 && r.controller.my);
 
     // run spwan logic for each room in our empire
-    _.forEach(Game.myRooms, r => roomLogic.spawning(r));
+    _.forEach(Game.myRooms, function(room) {
+        let hostiles = room.find(FIND_HOSTILE_CREEPS);
+        if (hostiles.length > 0) {
+            roomLogic.towers(room);
+        }
+        roomLogic.spawning(room); 
+    });
     
     // run each creep role see /creeps/index.js
     for(var name in Game.creeps) {
